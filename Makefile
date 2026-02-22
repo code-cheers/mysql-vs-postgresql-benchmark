@@ -4,8 +4,10 @@ RESULT_DIR ?= result
 DB ?= both
 TEST ?= both
 TEST_CASE ?= 2
+PYTHON ?= python3
+PLOT_PYTHON ?= $(shell if [ -x ./.venv/bin/python ]; then echo ./.venv/bin/python; else echo $(PYTHON); fi)
 
-.PHONY: help db-mysql db-postgresql db-up tests-build prepare run-case benchmark-query plot compare
+.PHONY: help db-mysql db-postgresql db-up tests-build prepare run-case insert-both benchmark-query plot compare
 
 help:
 	@echo "Targets:"
@@ -15,6 +17,7 @@ help:
 	@echo "  make tests-build                  # build performance tests Docker image"
 	@echo "  make prepare                      # db-up + tests-build"
 	@echo "  make run-case DB=mysql TEST_CASE=2 [RESULT_DIR=result]"
+	@echo "  make insert-both [RESULT_DIR=result]   # run INSERT_USERS for MySQL + PostgreSQL and plot insert comparison"
 	@echo "  make benchmark-query [DB=both] [TEST=both] [RESULT_DIR=result]"
 	@echo "  make plot [RESULT_DIR=result]     # build comparison charts from result logs"
 	@echo "  make compare [RESULT_DIR=result]  # prepare + benchmark-query + plot"
@@ -43,12 +46,21 @@ run-case:
 	DATA_SOURCE_CONNECTION_POOL_SIZE="$(DATA_SOURCE_CONNECTION_POOL_SIZE)" \
 	./run_test.py --test-case "$(TEST_CASE)" --db "$(DB)" --output-dir "$(RESULT_DIR)"
 
+insert-both:
+	@mkdir -p "$(RESULT_DIR)" "$(RESULT_DIR)/insert_only"
+	QUERIES_TO_EXECUTE=500000 QUERIES_RATE=10000 \
+	./run_test.py --test-case 1 --db mysql --output-dir "$(RESULT_DIR)"
+	QUERIES_TO_EXECUTE=500000 QUERIES_RATE=10000 \
+	./run_test.py --test-case 1 --db postgresql --output-dir "$(RESULT_DIR)"
+	cp -f "$(RESULT_DIR)/insert_users_mysql_10000_qps.txt" "$(RESULT_DIR)/insert_users_postgresql_10000_qps.txt" "$(RESULT_DIR)/insert_only/"
+	MPLBACKEND=Agg "$(PLOT_PYTHON)" ./plot_results.py --input-dir "$(RESULT_DIR)/insert_only" --output-dir "$(RESULT_DIR)/insert_only"
+
 benchmark-query:
 	@mkdir -p "$(RESULT_DIR)"
 	RESULTS_DIR="$(RESULT_DIR)" ./run_query_tests.bash "$(DB)" "$(TEST)"
 
 plot:
 	@mkdir -p "$(RESULT_DIR)"
-	python3 ./plot_results.py --input-dir "$(RESULT_DIR)" --output-dir "$(RESULT_DIR)"
+	MPLBACKEND=Agg "$(PLOT_PYTHON)" ./plot_results.py --input-dir "$(RESULT_DIR)" --output-dir "$(RESULT_DIR)"
 
 compare: prepare benchmark-query plot

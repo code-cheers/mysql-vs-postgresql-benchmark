@@ -115,10 +115,12 @@ def main():
 
     mysql_qps, mysql_qps_missing = grouped_values(cases, lookup, "MYSQL", "actual_qps")
     pg_qps, pg_qps_missing = grouped_values(cases, lookup, "POSTGRESQL", "actual_qps")
+    mysql_mean, mysql_mean_missing = grouped_values(cases, lookup, "MYSQL", "mean_ms")
+    pg_mean, pg_mean_missing = grouped_values(cases, lookup, "POSTGRESQL", "mean_ms")
     mysql_p99, mysql_p99_missing = grouped_values(cases, lookup, "MYSQL", "p99_ms")
     pg_p99, pg_p99_missing = grouped_values(cases, lookup, "POSTGRESQL", "p99_ms")
 
-    fig, (ax_qps, ax_p99) = plt.subplots(2, 1, figsize=(15, 10), constrained_layout=True)
+    fig, (ax_qps, ax_mean, ax_p99) = plt.subplots(3, 1, figsize=(15, 14), constrained_layout=True)
 
     mysql_qps_bars = ax_qps.bar([i - width / 2 for i in x], mysql_qps, width, label="MySQL")
     pg_qps_bars = ax_qps.bar([i + width / 2 for i in x], pg_qps, width, label="PostgreSQL")
@@ -130,6 +132,17 @@ def main():
     ax_qps.grid(axis="y", alpha=0.3)
     annotate_bars(ax_qps, mysql_qps_bars, mysql_qps, mysql_qps_missing, integer=True)
     annotate_bars(ax_qps, pg_qps_bars, pg_qps, pg_qps_missing, integer=True)
+
+    mysql_mean_bars = ax_mean.bar([i - width / 2 for i in x], mysql_mean, width, label="MySQL")
+    pg_mean_bars = ax_mean.bar([i + width / 2 for i in x], pg_mean, width, label="PostgreSQL")
+    ax_mean.set_title("Mean Latency (lower is better)")
+    ax_mean.set_ylabel("ms")
+    ax_mean.set_xticks(x)
+    ax_mean.set_xticklabels(cases, rotation=25, ha="right")
+    ax_mean.legend()
+    ax_mean.grid(axis="y", alpha=0.3)
+    annotate_bars(ax_mean, mysql_mean_bars, mysql_mean, mysql_mean_missing, integer=False)
+    annotate_bars(ax_mean, pg_mean_bars, pg_mean, pg_mean_missing, integer=False)
 
     mysql_p99_bars = ax_p99.bar([i - width / 2 for i in x], mysql_p99, width, label="MySQL")
     pg_p99_bars = ax_p99.bar([i + width / 2 for i in x], pg_p99, width, label="PostgreSQL")
