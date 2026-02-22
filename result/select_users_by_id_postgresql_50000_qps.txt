@@ -1,0 +1,48 @@
+Starting DB Performance Tests, connecting to POSTGRESQL data source with a pool of 64 connections...
+
+[main] INFO com.zaxxer.hikari.HikariDataSource - POSTGRESQL - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - POSTGRESQL - Added connection org.postgresql.jdbc.PgConnection@4bec1f0c
+
+[main] INFO com.zaxxer.hikari.HikariDataSource - POSTGRESQL - Start completed.
+POSTGRESQL data source connected, about to run SELECT_USERS_BY_ID test case.
+The following test case specification will be executed: TestCaseSpec[queriesToExecute=500000, queriesRate=50000, queryGroups=[QueryGroup[id=select-users-by-id, tables=["user"]]]]
+
+Tables count before test:
+"user": 500000
+
+2026-02-17T11:52:52.378, 50000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:52:53.801, 100000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:52:55.295, 150000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:52:56.716, 200000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:52:58.178, 250000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:52:59.727, 300000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:53:01.307, 350000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:53:02.723, 400000/500000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T11:53:04.277, 450000/500000 queries were issued, waiting 1s before sending next query batch...
+
+...
+
+Test case SELECT_USERS_BY_ID with POSTGRESQL data source finished! It had queries: [QueryGroup[id=select-users-by-id, tables=["user"]]]
+
+Tables count after test:
+"user": 500000
+
+Some stats...
+
+Total test duration: PT15.089S
+Queries duration: PT13.073S
+
+Executed queries: 500000
+
+Wanted queries rate: 50000/s
+Actual queries rate: 38247/s
+
+Min: 0.031 ms
+Max: 33.408 ms
+Mean: 0.47 ms
+
+Percentile 50 (Median): 0.362 ms
+Percentile 75: 0.528 ms
+Percentile 90: 0.772 ms
+Percentile 99: 2.169 ms
+Percentile 99.9: 10.615 ms

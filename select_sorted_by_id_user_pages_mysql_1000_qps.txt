@@ -1,0 +1,39 @@
+Starting DB Performance Tests, connecting to MYSQL data source with a pool of 128 connections...
+
+[main] INFO com.zaxxer.hikari.HikariDataSource - MYSQL - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - MYSQL - Added connection com.mysql.cj.jdbc.ConnectionImpl@687e99d8
+
+MYSQL data source connected, about to run SELECT_SORTED_BY_ID_USER_PAGES test case.
+[main] INFO com.zaxxer.hikari.HikariDataSource - MYSQL - Start completed.
+The following test case specification will be executed: TestCaseSpec[queriesToExecute=1000, queriesRate=1000, queryGroups=[QueryGroup[id=select-sorted-by-id-user-pages, tables=[`user`]]]]
+
+Tables count before test:
+`user`: 500000
+
+
+...
+
+Test case SELECT_SORTED_BY_ID_USER_PAGES with MYSQL data source finished! It had queries: [QueryGroup[id=select-sorted-by-id-user-pages, tables=[`user`]]]
+
+Tables count after test:
+`user`: 500000
+
+Some stats...
+
+Total test duration: PT1.01S
+Queries duration: PT1.01S
+
+Executed queries: 1000
+
+Wanted queries rate: 1000/s
+Actual queries rate: 990/s
+
+Min: 0.233 ms
+Max: 6.014 ms
+Mean: 0.91 ms
+
+Percentile 50 (Median): 0.887 ms
+Percentile 75: 1.147 ms
+Percentile 90: 1.32 ms
+Percentile 99: 1.801 ms
+Percentile 99.9: 6.014 ms

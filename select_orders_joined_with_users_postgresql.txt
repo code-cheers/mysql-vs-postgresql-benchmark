@@ -1,0 +1,50 @@
+Starting DB Performance Tests, connecting to POSTGRESQL data source with a pool of 64 connections...
+
+[main] INFO com.zaxxer.hikari.HikariDataSource - POSTGRESQL - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - POSTGRESQL - Added connection org.postgresql.jdbc.PgConnection@59494225
+[main] INFO com.zaxxer.hikari.HikariDataSource - POSTGRESQL - Start completed.
+
+POSTGRESQL data source connected, about to run SELECT_ORDERS_JOINED_WITH_USERS test case.
+The following test case specification will be executed: TestCaseSpec[queriesToExecute=350000, queriesRate=35000, queryGroups=[QueryGroup[id=select-orders-joined-with-users, tables=["order", "user"]]]]
+
+Tables count before test:
+"order": 100000
+"user": 500000
+
+2026-02-17T06:19:54.176, 35000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:19:55.869, 70000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:19:57.188, 105000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:19:58.533, 140000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:19:59.982, 175000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:20:01.374, 210000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:20:02.779, 245000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:20:04.111, 280000/350000 queries were issued, waiting 1s before sending next query batch...
+2026-02-17T06:20:05.563, 315000/350000 queries were issued, waiting 1s before sending next query batch...
+
+...
+
+Test case SELECT_ORDERS_JOINED_WITH_USERS with POSTGRESQL data source finished! It had queries: [QueryGroup[id=select-orders-joined-with-users, tables=["order", "user"]]]
+
+Tables count after test:
+"order": 100000
+"user": 500000
+
+Some stats...
+
+Total test duration: PT14.208S
+Queries duration: PT14.101S
+
+Executed queries: 350000
+
+Wanted queries rate: 35000/s
+Actual queries rate: 24821/s
+
+Min: 0.06 ms
+Max: 20.355 ms
+Mean: 0.603 ms
+
+Percentile 50 (Median): 0.428 ms
+Percentile 75: 0.619 ms
+Percentile 90: 0.987 ms
+Percentile 99: 4.132 ms
+Percentile 99.9: 10.629 ms
