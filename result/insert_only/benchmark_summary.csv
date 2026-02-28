@@ -1,3 +1,3 @@
 test_case,db,actual_qps,mean_ms,p99_ms,p999_ms,source_file
-INSERT_USERS,MYSQL,8937,2.175,17.403,53.839,insert_users_mysql_10000_qps.txt
-INSERT_USERS,POSTGRESQL,9134,0.541,1.452,5.36,insert_users_postgresql_10000_qps.txt
+INSERT_USERS,MYSQL,9061,2.065,16.52,99.9,insert_users_mysql_10000_qps.txt
+INSERT_USERS,POSTGRESQL,9143,0.565,1.808,5.548,insert_users_postgresql_10000_qps.txt
