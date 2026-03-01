@@ -1,0 +1,3 @@
+test_case,db,actual_qps,mean_ms,p99_ms,p999_ms,source_file
+DELETE_ORDERS_BY_ID,MYSQL,8903,1.552,7.125,99.471,delete_orders_by_id_mysql_10000_qps.txt
+DELETE_ORDERS_BY_ID,POSTGRESQL,9411,0.537,2.472,7.295,delete_orders_by_id_postgresql_10000_qps.txt

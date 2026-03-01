@@ -4,13 +4,14 @@ RESULT_DIR ?= result
 INSERT_RESULT_DIR ?= $(RESULT_DIR)/insert_only
 QUERY_RESULT_DIR ?= $(RESULT_DIR)/query_only
 UPDATE_RESULT_DIR ?= $(RESULT_DIR)/update_only
+DELETE_RESULT_DIR ?= $(RESULT_DIR)/delete_only
 DB ?= both
 TEST ?= both
 TEST_CASE ?= 2
 PYTHON ?= python3
 PLOT_PYTHON ?= $(shell if [ -x ./.venv/bin/python ]; then echo ./.venv/bin/python; else echo $(PYTHON); fi)
 
-.PHONY: help db-mysql db-postgresql db-up tests-build prepare run-case insert-both query-run query-plot query-both query-by-id query-sorted-pages update-run update-plot update-both benchmark-query plot compare
+.PHONY: help db-mysql db-postgresql db-up tests-build prepare run-case insert-both query-run query-plot query-both query-by-id query-sorted-pages update-run update-plot update-both delete-run delete-plot delete-both benchmark-query plot compare
 
 help:
 	@echo "Targets:"
@@ -29,6 +30,9 @@ help:
 	@echo "  make update-run [DB=both] [RESULT_DIR=result]                  # run update-email-by-id benchmark into update_only"
 	@echo "  make update-plot [RESULT_DIR=result]                           # plot update_only comparison"
 	@echo "  make update-both [DB=both] [RESULT_DIR=result]                 # update-run + update-plot"
+	@echo "  make delete-run [DB=both] [RESULT_DIR=result]                  # run delete-by-id benchmark into delete_only"
+	@echo "  make delete-plot [RESULT_DIR=result]                           # plot delete_only comparison"
+	@echo "  make delete-both [DB=both] [RESULT_DIR=result]                 # delete-run + delete-plot"
 	@echo "  make benchmark-query [DB=both] [TEST=both] [RESULT_DIR=result] # backward-compatible alias of query-run"
 	@echo "  make plot [RESULT_DIR=result]     # build comparison charts from result logs"
 	@echo "  make compare [RESULT_DIR=result]  # prepare + benchmark-query + plot"
@@ -91,6 +95,16 @@ update-plot:
 	MPLBACKEND=Agg "$(PLOT_PYTHON)" ./plot_results.py --input-dir "$(UPDATE_RESULT_DIR)" --output-dir "$(UPDATE_RESULT_DIR)"
 
 update-both: update-run update-plot
+
+delete-run:
+	@mkdir -p "$(DELETE_RESULT_DIR)"
+	RESULTS_DIR="$(DELETE_RESULT_DIR)" ./run_delete_tests.bash "$(DB)"
+
+delete-plot:
+	@mkdir -p "$(DELETE_RESULT_DIR)"
+	MPLBACKEND=Agg "$(PLOT_PYTHON)" ./plot_results.py --input-dir "$(DELETE_RESULT_DIR)" --output-dir "$(DELETE_RESULT_DIR)"
+
+delete-both: delete-run delete-plot
 
 benchmark-query: query-run
 

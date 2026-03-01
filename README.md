@@ -62,3 +62,23 @@ make update-run DB=postgresql
 
 - `result/update_only/mysql_vs_postgresql_comparison.png`
 - `result/update_only/benchmark_summary.csv`
+
+## 执行删除压测（单场景：按主键 ID 删除单条数据）
+
+跑 MySQL + PostgreSQL 并出图：
+
+```bash
+make delete-both
+```
+
+只跑 MySQL 或 PostgreSQL：
+
+```bash
+make delete-run DB=mysql
+make delete-run DB=postgresql
+```
+
+删除对比输出目录：
+
+- `result/delete_only/mysql_vs_postgresql_comparison.png`
+- `result/delete_only/benchmark_summary.csv`
